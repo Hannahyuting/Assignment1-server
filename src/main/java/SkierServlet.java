@@ -11,28 +11,6 @@ import java.io.IOException;
 public class SkierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        response.setContentType("text/plain");
-//        String urlPath = request.getPathInfo();
-//
-//        // check we have a URL!
-//        if (urlPath == null || urlPath.isEmpty()) {
-//            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//            response.getWriter().write("missing paramterers");
-//            return;
-//        }
-//
-//        String[] urlParts = urlPath.split("/");
-//        // and now validate url path and return the response status code
-//        // (and maybe also some value if input is valid)
-//
-//        if (!isUrlValid(urlParts)) {
-//            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//        } else {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            // do any sophisticated processing with urlParts which contains all the url params
-//            // TODO: process url params in `urlParts`
-//            response.getWriter().write("It works!");
-//        }
         response.getWriter().write("It works!");
     }
 
@@ -40,33 +18,28 @@ public class SkierServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         Gson gson = new Gson();
-//        String urlPath = request.getPathInfo();
-//
-//        // check we have a URL!
-//        if (urlPath == null || urlPath.isEmpty()) {
-//            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//            response.getWriter().write("missing parameters");
-//            return;
-//        }
-//
-//        String[] urlParts = urlPath.split("/");
-//        // and now validate url path and return the response status code
-//        // (and maybe also some value if input is valid)
-//
-//        int resStatus = getResStatus(urlParts);
-//        response.setStatus(resStatus);
-//        if (resStatus == 201) {
-//            // do any sophisticated processing with urlParts which contains all the url params
-//            // TODO: process url params in `urlParts`
-//            response.getWriter().write("It works!");
-//            JSON json = new JSON();
-//            LiftRide liftRide = json.deserialize(request.getReader().toString(), LiftRide.class);
-//        }
-//        response.getWriter().write("It works!");
+        String urlPath = request.getPathInfo();
 
-//        response.setStatus(HttpServletResponse.SC_OK);
-        Status status = new Status(true, "It works!");
-        response.getOutputStream().print(gson.toJson(status));
+        // check we have a URL!
+        if (urlPath == null || urlPath.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("missing parameters");
+            return;
+        }
+
+        String[] urlParts = urlPath.split("/");
+        // and now validate url path and return the response status code
+        // (and maybe also some value if input is valid)
+
+        int resStatus = getResStatus(urlParts);
+        response.setStatus(resStatus);
+        if (resStatus == 201) {
+            // do any sophisticated processing with urlParts which contains all the url params
+            // TODO: process url params in `urlParts`
+            response.setStatus(HttpServletResponse.SC_OK);
+            Status status = new Status(true, "It works!");
+            response.getOutputStream().print(gson.toJson(status));
+        }
     }
 
     private boolean isUrlValid(String[] urlPath) {
